@@ -47,11 +47,13 @@ if __name__ == '__main__':
     mask[args.position_x:args.position_x + 256, 
          args.position_y : args.position_y + 256] = True
     
-    print(mask.shape, content_img.size())
-    
+    #print(mask.shape, content_img.size())
     
     im = Image.fromarray(mask)
-    im.save(args.content_img_file[:args.content_img_file.rfind('.')] + '_mask.jpg')
+    im.save('./input/' + args.content_img_file[:args.content_img_file.rfind('.')] + '_mask.jpg')
+    im.save('./input/' + args.content_img_file)
+    
+    
     
     
          
