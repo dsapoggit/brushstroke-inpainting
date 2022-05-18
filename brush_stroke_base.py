@@ -101,7 +101,8 @@ def run_stroke_style_transfer(num_steps=1000, style_weight=3., content_weight=1.
 
 
     logger.info('Optimizing brushstroke-styled canvas..')
-    for _ in mon.iter_batch(range(num_steps)):
+    for ind in mon.iter_batch(range(num_steps)):
+    
         optimizer.zero_grad()
 
         input_img = bs_renderer()
@@ -129,6 +130,7 @@ def run_stroke_style_transfer(num_steps=1000, style_weight=3., content_weight=1.
         mon.plot('stroke tv loss'+ '_' + str(len_weight) + '_' + str(wid_weight) + '_', tv_score.item())
         mon.plot('stroke curvature loss'+ '_' + str(len_weight) + '_' + str(wid_weight) + '_', curv_score.item())
 
+
     mon.imwrite('stroke stylized' + '_' + str(len_weight) + '_' + str(wid_weight) + '_', input_img)
 
     with T.no_grad():
@@ -150,8 +152,10 @@ if __name__ == '__main__':
 
     
     canvas = run_stroke_style_transfer(wid_weight=0.000001, len_weight=0.1, style_weight=3.0, content_weight=1.0, init='grid', name = '')
+    #print(canvas.cpu().detach().size()) 
+    #print(content_img.size())
+    #print(args.save_to)
     
-
-    save_image(style_img.cpu(), args.save_to)
-    
+    save_image(canvas.cpu().detach()[None].permute(0, 3, 1, 2).contiguous(), args.save_to)
+    #mon.imwrite(args.save_to, canvas)
     
